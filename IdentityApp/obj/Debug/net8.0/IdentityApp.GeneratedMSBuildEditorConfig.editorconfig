@@ -18,6 +18,10 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = D:\febri\Programming\practices\c#\project-udemy\identity-asp-dotnet\IdentityApp\IdentityApp
 build_property._RazorSourceGeneratorDebug = 
 
+[D:/febri/Programming/practices/c\#/project-udemy/identity-asp-dotnet/IdentityApp/IdentityApp/Views/Account/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/febri/Programming/practices/c\#/project-udemy/identity-asp-dotnet/IdentityApp/IdentityApp/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -28,6 +32,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/febri/Programming/practices/c\#/project-udemy/identity-asp-dotnet/IdentityApp/IdentityApp/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/febri/Programming/practices/c\#/project-udemy/identity-asp-dotnet/IdentityApp/IdentityApp/Views/Shared/_LoginNav.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Mb2dpbk5hdi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/febri/Programming/practices/c\#/project-udemy/identity-asp-dotnet/IdentityApp/IdentityApp/Views/Shared/_ValidationScriptsPartial.cshtml]

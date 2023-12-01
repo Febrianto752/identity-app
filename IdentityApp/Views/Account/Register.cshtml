@@ -1,0 +1,35 @@
+﻿@model RegisterVM 
+
+<h1 class="text-center my-3">Register Form</h1>
+
+<div class="row justify-content-center">
+    <div class="col-sm-8 p-4 shadow-lg rounded">
+        <form method="post">
+            <p class="text-center">Create a new account</p>
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label class="form-label" asp-for="Email"></label>
+                <input asp-for="Email" class="form-control"/>
+            </div>
+
+            <div class="mb-3">
+                <label class= asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label class= asp-for="Password"></label>
+                <input asp-for="Password" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label class= asp-for="ConfirmPassword"></label>
+                <input asp-for="ConfirmPassword" class="form-control" />
+            </div>
+            
+            
+            <button class="btn btn-primary mt-4 px-4">Create</button>
+        </form>
+    </div>
+</div>
