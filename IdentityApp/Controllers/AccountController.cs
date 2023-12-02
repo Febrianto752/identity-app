@@ -17,13 +17,14 @@ namespace IdentityApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Register()
+        public IActionResult Register([FromQuery] string returnUrl = null)
         {
+            ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterVM registerVM)
+        public async Task<IActionResult> Register(RegisterVM registerVM, [FromQuery] string returnUrl = null)
         {
             if (ModelState.IsValid)
             {
@@ -59,21 +60,26 @@ namespace IdentityApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login([FromQuery] string returnUrl = null)
         {
+            ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginVM loginVM)
+        public async Task<IActionResult> Login(LoginVM loginVM, [FromQuery] string returnUrl = null)
         {
+            returnUrl = returnUrl ?? Url.Content("~/");
+            ViewData["ReturnUrl"] = returnUrl;
+
             if (ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync(loginVM.Email, loginVM.Password, loginVM.RememberMe, lockoutOnFailure: false);
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    //return RedirectToAction("Index", "Home");
+                    return LocalRedirect(returnUrl);
                 }
                 else
                 {
