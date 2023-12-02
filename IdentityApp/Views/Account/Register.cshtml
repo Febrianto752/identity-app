@@ -14,22 +14,23 @@
             </div>
 
             <div class="mb-3">
-                <label class= asp-for="Name"></label>
+                <label class="form-label" asp-for="Name"></label>
                 <input asp-for="Name" class="form-control" />
             </div>
 
             <div class="mb-3">
-                <label class= asp-for="Password"></label>
+                <label class="form-label" asp-for="Password"></label>
                 <input asp-for="Password" class="form-control" />
             </div>
 
             <div class="mb-3">
-                <label class= asp-for="ConfirmPassword"></label>
+                <label class="form-label" asp-for="ConfirmPassword"></label>
                 <input asp-for="ConfirmPassword" class="form-control" />
-            </div>
+            </div>            
             
-            
-            <button class="btn btn-primary mt-4 px-4">Create</button>
+            <button class="btn btn-primary mt-4 px-4">Register</button>
         </form>
+        <p class="mt-4">Already account?<a asp-controller="Account" asp-action="Login"> Login</a></p>
+              
     </div>
 </div>
