@@ -12,6 +12,17 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnection")));
 builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
 
+builder.Services.Configure<IdentityOptions>(option =>
+{
+    option.Password.RequireDigit = true;
+    option.Password.RequireLowercase = true;
+    option.Password.RequireNonAlphanumeric = false;
+    option.Password.RequireUppercase = true;
+    option.Lockout.MaxFailedAccessAttempts = 3;
+    option.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(30);
+    option.SignIn.RequireConfirmedEmail = false;
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -26,6 +26,9 @@ namespace IdentityApp.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterVM registerVM, [FromQuery] string returnUrl = null)
         {
+            returnUrl = returnUrl ?? Url.Content("~/");
+            ViewData["ReturnUrl"] = returnUrl;
+
             if (ModelState.IsValid)
             {
                 var user = new AppUser
@@ -40,7 +43,8 @@ namespace IdentityApp.Controllers
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
+                    //return RedirectToAction("Index", "Home");
+                    return LocalRedirect(returnUrl);
                 }
 
                 if (result.Errors.Count() > 0)
@@ -74,12 +78,16 @@ namespace IdentityApp.Controllers
 
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(loginVM.Email, loginVM.Password, loginVM.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(loginVM.Email, loginVM.Password, loginVM.RememberMe, lockoutOnFailure: true);
 
                 if (result.Succeeded)
                 {
                     //return RedirectToAction("Index", "Home");
                     return LocalRedirect(returnUrl);
+                }
+                else if (result.IsLockedOut)
+                {
+                    return View("Lockout");
                 }
                 else
                 {
@@ -91,6 +99,10 @@ namespace IdentityApp.Controllers
             return View(loginVM);
         }
 
+        public IActionResult Lockout()
+        {
+            return View();
+        }
 
         private void AddErrorsMessage(IdentityResult result)
         {

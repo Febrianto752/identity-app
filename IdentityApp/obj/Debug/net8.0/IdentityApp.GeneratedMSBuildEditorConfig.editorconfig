@@ -18,6 +18,10 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = D:\febri\Programming\practices\c#\project-udemy\identity-asp-dotnet\IdentityApp\IdentityApp
 build_property._RazorSourceGeneratorDebug = 
 
+[D:/febri/Programming/practices/c\#/project-udemy/identity-asp-dotnet/IdentityApp/IdentityApp/Views/Account/Lockout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2Nrb3V0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/febri/Programming/practices/c\#/project-udemy/identity-asp-dotnet/IdentityApp/IdentityApp/Views/Account/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

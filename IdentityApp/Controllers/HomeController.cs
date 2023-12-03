@@ -16,6 +16,13 @@ namespace IdentityApp.Controllers
 
         public IActionResult Index()
         {
+            var days = TimeSpan.FromDays(3);
+            var minutes = TimeSpan.FromMinutes(3);
+            var seconds = TimeSpan.FromSeconds(30);
+            Console.WriteLine("days : ");
+            Console.WriteLine(days);
+            Console.WriteLine(minutes);
+            Console.WriteLine(seconds);
             return View();
         }
 
