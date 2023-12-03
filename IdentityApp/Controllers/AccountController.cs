@@ -1,6 +1,7 @@
 ﻿using IdentityApp.Models;
 using IdentityApp.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityApp.Controllers
@@ -9,11 +10,13 @@ namespace IdentityApp.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly IEmailSender _emailSender;
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _emailSender = emailSender;
         }
 
         [HttpGet]
@@ -100,6 +103,47 @@ namespace IdentityApp.Controllers
         }
 
         public IActionResult Lockout()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordVM forgotPasswordVM)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(forgotPasswordVM.Email);
+                if (user == null)
+                {
+                    return RedirectToAction(nameof(ForgotPasswordConfirmation));
+                }
+
+                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new
+                {
+                    userId = user.Id,
+                    code
+                }, protocol: HttpContext.Request.Scheme);
+
+                _emailSender?.SendEmailAsync(forgotPasswordVM.Email, "Reset Password", $"Please reset your password by clicking <a href='{callbackUrl}'>link</a> here");
+            }
+            return View(forgotPasswordVM);
+        }
+
+        [HttpGet]
+        public IActionResult ResetPassword(string code = null)
+        {
+            return code == null ? View("Error") : View();
+        }
+
+        [HttpGet]
+        public IActionResult ForgotPasswordConfirmation()
         {
             return View();
         }
