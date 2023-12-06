@@ -45,9 +45,19 @@ namespace IdentityApp.Controllers
 
                 if (result.Succeeded)
                 {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    //return RedirectToAction("Index", "Home");
-                    return LocalRedirect(returnUrl);
+                    var verifyEmailCode = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new
+                    {
+                        userId = user.Id,
+                        code = verifyEmailCode
+                    }, protocol: HttpContext.Request.Scheme);
+
+                    await _emailSender.SendEmailAsync(registerVM.Email, "Confirm Email - Identity App", $"Please confirm your email by click link <a href='{callbackUrl}'>here</a>");
+
+                    //await _signInManager.SignInAsync(user, isPersistent: false);
+                    TempData["Success"] = "Your account successfully created. Please verified by your email";
+                    return RedirectToAction("Login", "Account");
+                    //return LocalRedirect(returnUrl);
                 }
 
                 if (result.Errors.Count() > 0)
@@ -57,6 +67,24 @@ namespace IdentityApp.Controllers
             }
 
             return View(registerVM);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(string code, string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user is null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+            if (result.Succeeded)
+            {
+                return View();
+            }
+
+            return BadRequest();
         }
 
         [HttpPost, ValidateAntiForgeryToken]
@@ -92,6 +120,11 @@ namespace IdentityApp.Controllers
                 {
                     return View("Lockout");
                 }
+                else if (result.IsNotAllowed)
+                {
+                    ModelState.AddModelError(string.Empty, "Your account has not verified yet. Please check your email");
+                    return View();
+                }
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
@@ -124,6 +157,11 @@ namespace IdentityApp.Controllers
                     return RedirectToAction(nameof(ForgotPasswordConfirmation));
                 }
 
+                if (user.EmailConfirmed is false)
+                {
+                    TempData["Error"] = "You cannot reset password your account because your account has not verified yet. Please check your email and verified your account first";
+                    return View();
+                }
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new
                 {
@@ -161,7 +199,7 @@ namespace IdentityApp.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> ResetPassword(ResetPasswordVM resetPasswordVM, string Code)
+        public async Task<IActionResult> ResetPassword(ResetPasswordVM resetPasswordVM)
         {
             if (ModelState.IsValid)
             {

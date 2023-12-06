@@ -135,3 +135,4 @@ D:\febri\Programming\practices\c#\project-udemy\identity-asp-dotnet\IdentityApp\
 D:\febri\Programming\practices\c#\project-udemy\identity-asp-dotnet\IdentityApp\IdentityApp\obj\Debug\net8.0\IdentityApp.pdb
 D:\febri\Programming\practices\c#\project-udemy\identity-asp-dotnet\IdentityApp\IdentityApp\obj\Debug\net8.0\IdentityApp.genruntimeconfig.cache
 D:\febri\Programming\practices\c#\project-udemy\identity-asp-dotnet\IdentityApp\IdentityApp\obj\Debug\net8.0\ref\IdentityApp.dll
+D:\febri\Programming\practices\c#\project-udemy\identity-asp-dotnet\IdentityApp\IdentityApp\obj\Debug\net8.0\IdentityApp.sourcelink.json
