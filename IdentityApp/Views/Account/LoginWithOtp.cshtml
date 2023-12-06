@@ -1,0 +1,23 @@
+﻿@model LoginWithOtpVM
+
+@{
+    Layout = "_Layout";
+}
+
+<h1>Verfiy Authenticator Code</h1>
+
+<form method="post" asp-controller="Account" asp-action="LoginWithOtp">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <input asp-for="RememberMe" type="hidden" />
+    <input asp-for="ReturnUrl" type="hidden" />
+    <hr />
+    <div class="form-group">
+        <label asp-for="Code" class="col-md-2"></label>
+        <div class="col-md-10">
+            <input asp-for="Code" class="form-control" />
+            <span asp-validation-for="Code" class="text-danger"></span>
+        </div>
+    </div>
+     <button type="submit" class="btn btn-success my-3">Submit</button>
+       
+</form>

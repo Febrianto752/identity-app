@@ -1,0 +1,22 @@
+﻿@model TwoFactorAuthenticationVM
+
+<h1 class="text-center my-3">Enable Authenticator</h1>
+
+<div class="row justify-content-center">
+    <div class="col-sm-8 p-4 shadow-lg rounded">
+        <p class="text-center">Please enter the code below in your authenticator app</p>
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <form method="post" asp-controller="Account" asp-action="EnableAuthenticator">
+           
+
+
+            <div class="mb-3">
+                <label class="form-label" asp-for="Code"></label>
+                <input asp-for="Code" class="form-control" />
+            </div>
+
+            <button class="btn btn-primary mt-4 px-4">Submit</button>
+        </form>
+
+    </div>
+</div>
