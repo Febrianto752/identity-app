@@ -1,0 +1,20 @@
+﻿@model EditRoleVM
+
+<a asp-controller="Role" asp-action="Index" class="btn btn-sm btn-info">&laquo; Back</a>
+<h1 class="text-center">Edit Role</h1>
+
+<div class="row">
+    <div class="col-sm-8 shadow-lg p-3">
+        <form method="post" asp-controller="Role" asp-action="Edit">
+            <input asp-for="RoleId" hidden />
+            <input asp-for="OldName" hidden />
+            <div class="mb-3">
+                <label class="form-label" asp-for="Name">Role Name</label>
+                <input class="form-control" asp-for="Name"/>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+        
+    </div>
+</div>
