@@ -1,4 +1,5 @@
 using IdentityApp.Models;
+using IdentityApp.Utilities.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -32,7 +33,7 @@ namespace IdentityApp.Controllers
             return View();
         }
 
-        [Authorize]
+        [Authorize(Roles = $"{nameof(RoleEnum.Admin)}")]
         public IActionResult Privacy()
         {
             return View();

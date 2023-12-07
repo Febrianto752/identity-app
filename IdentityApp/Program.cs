@@ -28,6 +28,11 @@ builder.Services.Configure<IdentityOptions>(option =>
     option.SignIn.RequireConfirmedEmail = true;
 });
 
+builder.Services.ConfigureApplicationCookie(option =>
+{
+    option.AccessDeniedPath = new PathString("/Error/Forbidden");
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

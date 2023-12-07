@@ -1,9 +1,11 @@
 ﻿using IdentityApp.Models;
+using IdentityApp.Utilities.Enums;
 using IdentityApp.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace IdentityApp.Controllers
 {
@@ -12,19 +14,48 @@ namespace IdentityApp.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IEmailSender _emailSender;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IEmailSender emailSender)
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IEmailSender emailSender, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
+            _roleManager = roleManager;
         }
 
         [HttpGet]
-        public IActionResult Register([FromQuery] string returnUrl = null)
+        public async Task<IActionResult> Register([FromQuery] string returnUrl = null)
         {
+            if (!_roleManager.RoleExistsAsync(nameof(RoleEnum.Admin)).GetAwaiter().GetResult())
+            {
+                await _roleManager.CreateAsync(new IdentityRole(nameof(RoleEnum.Admin)));
+                await _roleManager.CreateAsync(new IdentityRole(nameof(RoleEnum.User)));
+            }
+
+            var listItems = new List<SelectListItem>();
+            //listItems.Add(new SelectListItem()
+            //{
+            //    Value = nameof(RoleEnum.Admin),
+            //    Text = nameof(RoleEnum.Admin)
+            //});
+            //listItems.Add(new SelectListItem()
+            //{
+            //    Value = nameof(RoleEnum.User),
+            //    Text = nameof(RoleEnum.User)
+            //});
+
+            var registerViewModel = new RegisterVM()
+            {
+                RoleList = _roleManager.Roles.Select(role => role.Name).Select(roleName => new SelectListItem
+                {
+                    Text = roleName,
+                    Value = roleName
+                })
+            };
+
             ViewData["ReturnUrl"] = returnUrl;
-            return View();
+            return View(registerViewModel);
         }
 
         [HttpPost, ValidateAntiForgeryToken]
@@ -46,6 +77,8 @@ namespace IdentityApp.Controllers
 
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(user, registerVM.RoleSelected);
+
                     var verifyEmailCode = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new
                     {
@@ -66,6 +99,12 @@ namespace IdentityApp.Controllers
                     AddErrorsMessage(result);
                 }
             }
+
+            registerVM.RoleList = _roleManager.Roles.Select(role => role.Name).Select(roleName => new SelectListItem
+            {
+                Text = roleName,
+                Value = roleName
+            });
 
             return View(registerVM);
         }
@@ -322,7 +361,6 @@ namespace IdentityApp.Controllers
         [HttpGet]
         public async Task<IActionResult> RemoveTwoFactorAuthentication()
         {
-
             var user = await _userManager.GetUserAsync(User);
             await _userManager.ResetAuthenticatorKeyAsync(user);
             await _userManager.SetTwoFactorEnabledAsync(user, false);

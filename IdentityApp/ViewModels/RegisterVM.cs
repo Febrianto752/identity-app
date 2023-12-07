@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace IdentityApp.ViewModels
 {
@@ -15,6 +17,12 @@ namespace IdentityApp.ViewModels
 
         [Required, DataType(DataType.Password), Display(Name = "Confirm Password"), Compare("Password", ErrorMessage = "The password and confirm password do not match")]
         public string ConfirmPassword { get; set; }
+
+        [ValidateNever]
+        public IEnumerable<SelectListItem> RoleList { get; set; }
+
+        [Display(Name = "Role Selected")]
+        public string RoleSelected { get; set; }
 
     }
 }
