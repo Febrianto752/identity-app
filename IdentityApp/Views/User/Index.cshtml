@@ -21,32 +21,32 @@
                 </th>
                 <th></th>
             </tr>
-            @foreach (var item in Model)
+            @foreach (var user in Model)
             {
                 <tr>
                     <td>
-                        @item.Email
+                        @user.Email
                     </td>
                     <td>
-                        @item.Name
+                        @user.Name
                     </td>
                     <td>
-                        @item.Role
+                        @user.Role
                     </td>
                     <td>
                         <div class="text-center">
-                            <form asp-action="Delete" asp-route-userId="@item.Id">
-                                <a asp-action="Edit" asp-route-userId="@item.Id" class="btn btn-info text-white" style="cursor:pointer">
+                            <form asp-action="Delete" asp-route-userId="@user.Id">
+                                <a asp-action="Edit" asp-route-userId="@user.Id" class="btn btn-info text-white" style="cursor:pointer">
                                     Edit
                                 </a>
 
-                                <a asp-action="ManageUserClaims" asp-route-userId="@item.Id" class="btn btn-primary text-white"
+                                <a asp-action="ManageUserClaims" asp-route-userId="@user.Id" class="btn btn-primary text-white"
                                    style="cursor:pointer">Claims</a>
 
-                                @if (item.LockoutEnd == null || item.LockoutEnd < DateTime.Now)
+                                @if (user.LockoutEnd == null || user.LockoutEnd < DateTime.Now)
                                 {
                                     //we want to show them the option to lock
-                                    <button asp-action="LockUnlock" asp-route-userId="@item.Id" class="btn btn-success text-white"
+                                    <button asp-action="LockUnlock" asp-route-userId="@user.Id" class="btn btn-success text-white"
                                             style="cursor:pointer">
                                         <span>&nbsp; Lock &nbsp;</span>
                                     </button>
@@ -54,7 +54,7 @@
                                 else
                                 {
                                     //we want to show them the option to unlock
-                                    <button asp-action="LockUnlock" asp-route-userId="@item.Id" class="btn btn-warning text-white"
+                                    <button asp-action="LockUnlock" asp-route-userId="@user.Id" class="btn btn-warning text-white"
                                             style="cursor:pointer">
                                         <span>UnLock</span>
                                     </button>
