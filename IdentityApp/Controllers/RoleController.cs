@@ -103,5 +103,28 @@ namespace IdentityApp.Controllers
             return View(model);
         }
 
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var role = _db.Roles.FirstOrDefault(u => u.Id == id);
+            if (role == null)
+            {
+                TempData["Error"] = "Role not found.";
+                return RedirectToAction(nameof(Index));
+            }
+            var userRolesForThisRole = _db.UserRoles.Where(u => u.RoleId == id).Count();
+            if (userRolesForThisRole > 0)
+            {
+                TempData["Error"] = "Cannot delete this role, since there are users assigned to this role.";
+                return RedirectToAction(nameof(Index));
+            }
+            await _roleManager.DeleteAsync(role);
+            TempData["Success"] = "Role deleted successfully.";
+            return RedirectToAction(nameof(Index));
+
+        }
+
+
+
     }
 }
