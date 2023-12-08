@@ -103,5 +103,46 @@ namespace IdentityApp.Controllers
             TempData[Status.Success] = "Roles assigned successfully";
             return RedirectToAction(nameof(Index));
         }
+
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult LockUnlock(string userId)
+        {
+            var user = _db.AppUsers.FirstOrDefault(u => u.Id == userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            if (user.LockoutEnd != null && user.LockoutEnd > DateTime.Now)
+            {
+                //user is locked and will remain locked untill lockoutend time
+                //clicking on this action will unlock them
+                user.LockoutEnd = DateTime.Now;
+                TempData[Status.Success] = "User unlocked successfully.";
+            }
+            else
+            {
+                //user is not locked, and we want to lock the user
+                user.LockoutEnd = DateTime.Now.AddMonths(1);
+                TempData[Status.Success] = "User locked successfully.";
+            }
+            _db.SaveChanges();
+            return RedirectToAction(nameof(Index));
+
+        }
+
+        [HttpPost]
+        public IActionResult Delete(string userId)
+        {
+            var user = _db.AppUsers.FirstOrDefault(u => u.Id == userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            _db.AppUsers.Remove(user);
+            _db.SaveChanges();
+            TempData[Status.Success] = "User deleted successfully.";
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
