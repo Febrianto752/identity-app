@@ -21,22 +21,15 @@ namespace IdentityApp.Controllers
             _roleManager = roleManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var userList = _db.AppUsers.ToList();
-            var userRoles = _db.UserRoles.ToList();
+            //var userRoles = _db.UserRoles.ToList();
             var roles = _db.Roles.ToList();
             foreach (var user in userList)
             {
-                var role = userRoles.FirstOrDefault(u => u.UserId == user.Id);
-                if (role == null)
-                {
-                    user.Role = "None";
-                }
-                else
-                {
-                    user.Role = roles.FirstOrDefault(u => u.Id == role.RoleId).Name;
-                }
+                var userRoles = await _userManager.GetRolesAsync(user);
+                user.Role = String.Join(",", userRoles);
             }
 
             return View(userList);
