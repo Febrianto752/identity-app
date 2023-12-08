@@ -2,7 +2,7 @@
 <br />
 <div class="row">
     <div class="col-6">
-        <h2 class="text-primary">User List </h2>
+        <h2 class="text-primary">Manage User Roles</h2>
     </div>
 </div>
 <div class="p-4 border rounded">
@@ -40,8 +40,8 @@
                                     Edit
                                 </a>
 
-                                <a asp-action="ManageUserClaims" asp-route-userId="@user.Id" class="btn btn-primary text-white"
-                                   style="cursor:pointer">Claims</a>
+                                <a asp-action="ManageRole" asp-route-userId="@user.Id" class="btn btn-primary text-white"
+                                   style="cursor:pointer">Roles</a>
 
                                 @if (user.LockoutEnd == null || user.LockoutEnd < DateTime.Now)
                                 {

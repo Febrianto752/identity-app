@@ -1,14 +1,16 @@
-﻿@if (TempData["Success"] != null)
+﻿@using IdentityApp.Utilities
+
+@if (TempData[Status.Success] != null)
 {
 	<div class="alert alert-success alert-dismissible fade show" role="alert">
-		<p>@TempData["Success"]</p>
+		<p>@TempData[Status.Success]</p>
 		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 	</div>
 }
-else if (TempData["Error"] != null)
+else if (TempData[Status.Error] != null)
 {
 	<div class="alert alert-danger alert-dismissible fade show" role="alert">
-		<p>@TempData["Error"]</p>
+		<p>@TempData[Status.Error]</p>
 		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 	</div>
 }

@@ -1,5 +1,6 @@
 ﻿using IdentityApp.Data;
 using IdentityApp.Models;
+using IdentityApp.Utilities;
 using IdentityApp.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -42,12 +43,12 @@ namespace IdentityApp.Controllers
                 if (await _roleManager.RoleExistsAsync(model.Name))
                 {
                     //error
-                    TempData["Error"] = "Role already exists.";
+                    TempData[Status.Error] = "Role already exists.";
                     return RedirectToAction(nameof(Index));
                 }
 
                 await _roleManager.CreateAsync(new IdentityRole() { Name = model.Name });
-                TempData["Success"] = "Role created successfully";
+                TempData[Status.Success] = "Role created successfully";
 
                 return RedirectToAction(nameof(Index));
             }
@@ -61,7 +62,7 @@ namespace IdentityApp.Controllers
             var role = _db.Roles.FirstOrDefault(u => u.Id == id);
             if (role == null)
             {
-                TempData["Error"] = "Role not found.";
+                TempData[Status.Error] = "Role not found.";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -78,7 +79,7 @@ namespace IdentityApp.Controllers
 
                 if (role == null)
                 {
-                    TempData["Error"] = "Role not found.";
+                    TempData[Status.Error] = "Role not found.";
                     return RedirectToAction(nameof(Index));
                 }
 
@@ -87,7 +88,7 @@ namespace IdentityApp.Controllers
                     var roleIsExist = await _roleManager.RoleExistsAsync(model.Name);
                     if (roleIsExist)
                     {
-                        TempData["Error"] = "Role already exists.";
+                        TempData[Status.Error] = "Role already exists.";
                         return RedirectToAction(nameof(Index));
                     }
 
@@ -96,7 +97,7 @@ namespace IdentityApp.Controllers
                 role.Name = model.Name;
                 role.NormalizedName = model.Name.ToUpper();
                 var result = await _roleManager.UpdateAsync(role);
-                TempData["Success"] = "Role updated successfully";
+                TempData[Status.Success] = "Role updated successfully";
 
                 return RedirectToAction(nameof(Index));
             }
@@ -109,21 +110,19 @@ namespace IdentityApp.Controllers
             var role = _db.Roles.FirstOrDefault(u => u.Id == id);
             if (role == null)
             {
-                TempData["Error"] = "Role not found.";
+                TempData[Status.Error] = "Role not found.";
                 return RedirectToAction(nameof(Index));
             }
             var userRolesForThisRole = _db.UserRoles.Where(u => u.RoleId == id).Count();
             if (userRolesForThisRole > 0)
             {
-                TempData["Error"] = "Cannot delete this role, since there are users assigned to this role.";
+                TempData[Status.Error] = "Cannot delete this role, since there are users assigned to this role.";
                 return RedirectToAction(nameof(Index));
             }
             await _roleManager.DeleteAsync(role);
-            TempData["Success"] = "Role deleted successfully.";
+            TempData[Status.Success] = "Role deleted successfully.";
             return RedirectToAction(nameof(Index));
-
         }
-
 
 
     }

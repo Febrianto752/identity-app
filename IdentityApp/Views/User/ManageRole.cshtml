@@ -1,0 +1,39 @@
+﻿@model RolesVM
+
+<h1 class="text-center">Manage User Roles</h1>
+
+<div class="row justify-content-center">
+    <div class="col-sm-8 p-3 shadow-lg">
+        <partial name="_FlashMessage"/>
+        <form method="post">
+            <input asp-for="User.Id" hidden/>
+            <div class="mb-3">
+                <label class="form-label">User Name</label>
+                <input asp-for="User.Name" class="form-control" disabled />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input asp-for="User.Email" class="form-control" disabled />
+            </div>
+
+            <div class="mb-3">
+                <div class="mb-3">Roles Assignment</div>
+                @{
+                    var i = 0;
+                }
+                @foreach(var role in Model.RoleList)
+                {
+                    
+                    <div class="mb-2 form-check">
+                        <input asp-for="RoleList[i].RoleName" hidden />
+                        <input type="checkbox" asp-for="RoleList[i].IsSelected">
+                        <label class="form-check-label" asp-for="RoleList[i].RoleName">@role.RoleName</label>
+                    </div>
+                    i++;
+                }
+            </div>
+
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    </div>
+</div>
