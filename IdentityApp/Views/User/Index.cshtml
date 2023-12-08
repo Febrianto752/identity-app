@@ -41,6 +41,9 @@
                             <a asp-action="ManageRole" asp-route-userId="@user.Id" class="btn btn-primary text-white"
                                style="cursor:pointer">Roles</a>
 
+                            <a asp-action="ManageUserClaims" asp-route-userId="@user.Id" class="btn btn-info text-white"
+                               style="cursor:pointer">Claims</a>
+
                             <form method="post" asp-action="LockUnlock" asp-route-userId="@user.Id" class="d-inline">
                                 @if (user.LockoutEnd == null || user.LockoutEnd < DateTime.Now)
                                 {
